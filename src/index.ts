@@ -11,10 +11,11 @@ import residentRouter from "./routes/resident-route";
 import imageDetectionRoute from "./routes/image-detection-route";
 import residentAdminValidationUpdateRoute from "./routes/resident-admin-update-validation-route";
 import verificationCodeRoute from "./routes/verification-code-route";
+import healthRouter from "./routes/health-route";
 import bodyParser from "body-parser";
-
 const app: Application = express();
-const PORT = 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
+const HOST = '0.0.0.0';
 
 const allowedOrigins = [
   "https://barangay-ly7m.onrender.com",
@@ -41,6 +42,7 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json({ limit: "100mb" }));
 app.use(bodyParser.urlencoded({ limit: "100mb", extended: true }));
+app.use("/api/health", healthRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/cencus", cencusRouter);
 app.use("/api/cookie", cookieRoute);
@@ -48,12 +50,11 @@ app.use("/api/resident", residentRouter);
 app.use("/api/image", imageDetectionRoute);
 app.use("/api/residentupdate", residentAdminValidationUpdateRoute);
 app.use("/api/verification", verificationCodeRoute);
-
 app.use(errorHandler);
 
 // Start the server
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  app.listen(PORT, HOST, () => {
+    console.log(`Server running on ${HOST}:${PORT}`);
   });
 });
