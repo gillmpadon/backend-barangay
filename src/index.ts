@@ -14,8 +14,8 @@ import verificationCodeRoute from "./routes/verification-code-route";
 import healthRouter from "./routes/health-route";
 import bodyParser from "body-parser";
 const app: Application = express();
-const PORT = parseInt(process.env.PORT || '3000', 10);
-const HOST = '0.0.0.0';
+const PORT = parseInt(process.env.PORT || "3310", 10);
+const HOST = process.env.HOST || '0.0.0.0';
 
 const allowedOrigins = [
   "https://barangay-ly7m.onrender.com",
@@ -55,6 +55,6 @@ app.use(errorHandler);
 // Start the server
 connectDB().then(() => {
   app.listen(PORT, HOST, () => {
-    console.log(`Server running on ${HOST}:${PORT}`);
+    console.log(`Server running on ${HOST}`);
   });
 });
